@@ -1,4 +1,4 @@
-const Card = require("../models/articleCard");
+const Card = require("../models/articleCard.js");
 
 const BadRequestError = require("../utils/errors/badRequestError");
 const ForbiddenError = require("../utils/errors/forbiddenError");
@@ -26,7 +26,6 @@ const createCard = (req, res, next) => {
     text,
     date,
     source,
-    weather,
     url,
     imageUrl,
     owner,

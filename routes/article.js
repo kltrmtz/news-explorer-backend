@@ -3,7 +3,7 @@ const {
   getCards,
   createCard,
   saveCard,
-  unsaveCard,
+  // unsaveCard,
   deleteCard,
 } = require("../controllers/articleCards");
 const { auth } = require("../middlewares/auth");
@@ -18,7 +18,7 @@ router.use(auth);
 
 router.post("/", validateArticleCardBodyCreate, createCard);
 router.put("/:cardId/saves", validateId, saveCard);
-router.delete("/:cardId/saves", validateId, unsaveCard);
+// router.delete("/:cardId/saves", validateId, unsaveCard);
 router.delete("/:cardId", validateId, deleteCard);
 
 module.exports = router;

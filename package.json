@@ -2,9 +2,8 @@
   "name": "news-explorer-backend",
   "version": "1.0.0",
   "description": "\"The back-end is focused on creating a server for the news-explorer application. This will work with a database, set up security and testing, deploy the web application on a remote machine, & create a server with an API & user authorization. ",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint .",
     "start": "node app.js",
     "dev": "nodemon app.js"
