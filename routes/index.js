@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
 const userRouter = require("./users");
-const cardRouter = require("./article");
+const articleRouter = require("./article");
 const { createUser, userLogin } = require("../controllers/users");
 const NotFoundError = require("../utils/errors/notFoundError");
 const {
@@ -10,7 +10,7 @@ const {
 } = require("../middlewares/validation");
 
 router.use("/users", userRouter);
-router.use("/cards", cardRouter);
+router.use("/articles", articleRouter);
 
 router.post("/signin", validateAuth, userLogin);
 router.post("/signup", validateUserBodyCreate, createUser);

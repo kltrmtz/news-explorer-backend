@@ -12,9 +12,9 @@ const {
   validateId,
 } = require("../middlewares/validation");
 
-router.get("/", getCards);
-
 router.use(auth);
+
+router.get("/", getCards);
 
 router.post("/", validateArticleCardBodyCreate, createCard);
 router.put("/:cardId/saves", validateId, saveCard);

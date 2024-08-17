@@ -1,12 +1,24 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
-const User = require("../models/user.js");
+const User = require("../models/user");
 
 const BadRequestError = require("../utils/errors/badRequestError");
 const UnauthorizedError = require("../utils/errors/unauthorizedError");
 const NotFoundError = require("../utils/errors/notFoundError");
 const DuplicateError = require("../utils/errors/duplicateError");
+
+const {
+  BadRequestError,
+  UnauthorizedError,
+  NotFoundError,
+  DuplicateError,
+
+  HTTP_BAD_REQUEST,
+  HTTP_UNAUTHORIZED,
+  HTTP_NOT_FOUND,
+  HTTP_USER_DUPLICATED,
+} = require("../utils/errors/constants");
 
 // POST /users
 
@@ -62,7 +74,8 @@ const userLogin = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(BadRequestError).send({ message: "Invalid data" });
+    // res.status(BadRequestError).send({ message: "Invalid data" });
+    next(new BadRequestError("Invalid data"));
     return;
   }
 

@@ -22,7 +22,7 @@ const articleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  url: {
+  link: {
     type: String,
     required: true,
     validate: {
@@ -32,7 +32,7 @@ const articleSchema = new mongoose.Schema({
       message: "You must enter a valid URL",
     },
   },
-  imageUrl: {
+  image: {
     type: String,
     required: true,
     validate: {
@@ -47,13 +47,13 @@ const articleSchema = new mongoose.Schema({
     required: true,
     default: [],
   },
-  saved: [
-    {
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: "user",
-      default: [],
-    },
-  ],
+  // saved: [
+  //   {
+  //     type: mongoose.SchemaTypes.ObjectId,
+  //     ref: "user",
+  //     default: [],
+  //   },
+  // ],
 });
 
-module.exports = mongoose.model("cards", articleSchema);
+module.exports = mongoose.model("articles", articleSchema);

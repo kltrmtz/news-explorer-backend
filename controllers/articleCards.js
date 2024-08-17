@@ -1,13 +1,23 @@
-const Card = require("../models/articleCard.js");
+const Card = require("../models/articleCard");
 
 const BadRequestError = require("../utils/errors/badRequestError");
 const ForbiddenError = require("../utils/errors/forbiddenError");
 const NotFoundError = require("../utils/errors/notFoundError");
 
+const {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+
+  HTTP_BAD_REQUEST,
+  HTTP_FORBIDDEN,
+  HTTP_NOT_FOUND,
+} = require("../utils/errors/constants");
+
 // GET /cards
 
 const getCards = (req, res, next) => {
-  Card.find({})
+  Card.find({ owner: req.user._id })
     .then((cards) => res.status(200).send(cards))
     .catch((err) => {
       next(err);
@@ -18,7 +28,7 @@ const getCards = (req, res, next) => {
 
 const createCard = (req, res, next) => {
   console.log(req.user._id);
-  const { keyword, title, text, date, source, url, imageUrl } = req.body;
+  const { keyword, title, text, date, source, link, image } = req.body;
   const owner = req.user._id;
   Card.create({
     keyword,
@@ -26,8 +36,8 @@ const createCard = (req, res, next) => {
     text,
     date,
     source,
-    url,
-    imageUrl,
+    link,
+    image,
     owner,
   })
     .then((card) => {

@@ -20,9 +20,37 @@ module.exports.validateArticleCardBodyCreate = celebrate({
       "string.max": 'The maximum length of the "name" field is 30',
       "string.empty": 'The "keyword" field must be filled in',
     }),
-    imageUrl: Joi.string().required().custom(validateURL).messages({
-      "string.empty": 'The "imageUrl" field must be filled in',
-      "string.uri": 'The "imageUrl" field must be a valid url',
+    title: Joi.string().required().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "title" field must be filled in',
+    }),
+    text: Joi.string().required().min(2).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.empty": 'The "text" field must be filled in',
+    }),
+    date: Joi.string().required().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "date" field must be filled in',
+    }),
+    source: Joi.string().required().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "source" field must be filled in',
+    }),
+    link: Joi.string().required().custom(validateURL).messages({
+      "string.empty": 'The "link" field must be filled in',
+      "string.uri": 'The "link" field must be a valid url',
+    }),
+    image: Joi.string().required().custom(validateURL).messages({
+      "string.empty": 'The "image" field must be filled in',
+      "string.uri": 'The "image" field must be a valid url',
+    }),
+    owner: Joi.string().required().min(2).max(30).messages({
+      "string.min": 'The minimum length of the "name" field is 2',
+      "string.max": 'The maximum length of the "name" field is 30',
+      "string.empty": 'The "owner" field must be filled in',
     }),
   }),
 });

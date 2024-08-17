@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
+const { limiter } = require("./utils/rateLimiter");
 
 const { errors } = require("celebrate");
 const errorHandler = require("./middlewares/error-handler");
@@ -23,7 +24,11 @@ app.use(cors());
 
 app.use(helmet());
 
+app.use(limiter);
+
 app.use(express.json());
+
+app.use(requestLogger);
 
 app.get("/crash-test", () => {
   setTimeout(() => {
@@ -32,8 +37,6 @@ app.get("/crash-test", () => {
 });
 
 app.use("/", indexRouter);
-
-app.use(requestLogger);
 
 app.use(errorLogger); // enabling the error logger
 
