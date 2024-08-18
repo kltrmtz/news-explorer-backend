@@ -9,11 +9,6 @@ const NotFoundError = require("../utils/errors/notFoundError");
 const DuplicateError = require("../utils/errors/duplicateError");
 
 const {
-  BadRequestError,
-  UnauthorizedError,
-  NotFoundError,
-  DuplicateError,
-
   HTTP_BAD_REQUEST,
   HTTP_UNAUTHORIZED,
   HTTP_NOT_FOUND,
@@ -26,14 +21,14 @@ const createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!email) {
-    res.status(BadRequestError).send({ message: "Invalid data" });
+    res.status(BadRequestError).send({ message: HTTP_BAD_REQUEST });
     return;
   }
 
   User.findOne({ email })
     .then((user) => {
       if (user) {
-        const error = new Error("Duplicate user");
+        const error = new Error(HTTP_USER_DUPLICATED);
         error.statusCode = DuplicateError;
         throw error;
       }
@@ -56,13 +51,13 @@ const createUser = (req, res, next) => {
 
     .catch((err) => {
       if (err.statusCode === DuplicateError) {
-        next(new DuplicateError("Duplicate error."));
+        next(new DuplicateError(HTTP_USER_DUPLICATED));
       }
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("No document found for query."));
+        next(new NotFoundError(HTTP_NOT_FOUND));
       } else {
         next(err);
       }
@@ -75,7 +70,7 @@ const userLogin = (req, res, next) => {
 
   if (!email || !password) {
     // res.status(BadRequestError).send({ message: "Invalid data" });
-    next(new BadRequestError("Invalid data"));
+    next(new BadRequestError(HTTP_BAD_REQUEST));
     return;
   }
 
@@ -88,10 +83,10 @@ const userLogin = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.message === "Incorrect email or password") {
-        next(new UnauthorizedError("Unauthorized data."));
+        next(new UnauthorizedError(HTTP_UNAUTHORIZED));
       } else {
         next(err);
       }
@@ -108,48 +103,13 @@ const getCurrentUser = (req, res, next) => {
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("No document found for query."));
-      } else {
-        next(err);
-      }
-    });
-};
-
-const updateProfile = (req, res, next) => {
-  const userId = req.user._id;
-  const { name } = req.body;
-
-  User.findByIdAndUpdate(
-    userId,
-    {
-      name,
-    },
-    {
-      new: true,
-      runValidators: true,
-    },
-  )
-    .orFail()
-    .then((user) => {
-      console.log(user);
-      res.status(200).send({ data: user });
-      return user;
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
-      }
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
-      }
-      if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("No document found for query."));
+        next(new NotFoundError(HTTP_NOT_FOUND));
       } else {
         next(err);
       }
@@ -160,5 +120,4 @@ module.exports = {
   createUser,
   userLogin,
   getCurrentUser,
-  updateProfile,
 };

@@ -20,9 +20,8 @@ module.exports.validateArticleCardBodyCreate = celebrate({
       "string.max": 'The maximum length of the "name" field is 30',
       "string.empty": 'The "keyword" field must be filled in',
     }),
-    title: Joi.string().required().min(2).max(30).messages({
+    title: Joi.string().required().min(2).messages({
       "string.min": 'The minimum length of the "name" field is 2',
-      "string.max": 'The maximum length of the "name" field is 30',
       "string.empty": 'The "title" field must be filled in',
     }),
     text: Joi.string().required().min(2).messages({

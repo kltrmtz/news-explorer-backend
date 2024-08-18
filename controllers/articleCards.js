@@ -5,10 +5,6 @@ const ForbiddenError = require("../utils/errors/forbiddenError");
 const NotFoundError = require("../utils/errors/notFoundError");
 
 const {
-  BadRequestError,
-  ForbiddenError,
-  NotFoundError,
-
   HTTP_BAD_REQUEST,
   HTTP_FORBIDDEN,
   HTTP_NOT_FOUND,
@@ -46,67 +42,15 @@ const createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("The id string is in an invalid format"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       } else {
         next(err);
       }
     });
 };
-
-// PUT /cards/:cardId/saves — save a card
-
-const saveCard = (req, res, next) => {
-  console.log(req.params.cardId);
-  Card.findByIdAndUpdate(
-    req.params.cardId,
-    { $addToSet: { saves: req.user._id } },
-    { new: true },
-  )
-    .orFail()
-    .then((card) => res.status(200).send({ data: card }))
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
-      }
-      if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data"));
-      }
-      if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("No document found for query."));
-      } else {
-        next(err);
-      }
-    });
-};
-
-// DELETE /cards/:cardId/saves — unsave a card
-
-// const unsaveCard = (req, res, next) => {
-//   console.log(req.params.cardId);
-//   Card.findByIdAndUpdate(
-//     req.params.cardId,
-//     { $pull: { likes: req.user._id } },
-//     { new: true },
-//   )
-//     .orFail()
-//     .then((card) => res.status(200).send({ data: card }))
-//     .catch((err) => {
-//       if (err.name === "CastError") {
-//         next(new BadRequestError("Invalid data"));
-//       }
-//       if (err.name === "ValidationError") {
-//         next(new BadRequestError("Invalid data"));
-//       }
-//       if (err.name === "DocumentNotFoundError") {
-//         next(new NotFoundError("No document found for query."));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
 
 // DELETE /cards/:cardId
 
@@ -116,11 +60,7 @@ const deleteCard = (req, res, next) => {
     .orFail()
     .then((card) => {
       if (card.owner.toString() !== req.user._id.toString()) {
-        return next(
-          new ForbiddenError(
-            "You do not have not permission to access this resource.",
-          ),
-        );
+        return next(new ForbiddenError(HTTP_FORBIDDEN));
       }
 
       return Card.findByIdAndDelete(cardId)
@@ -130,10 +70,10 @@ const deleteCard = (req, res, next) => {
 
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError("Invalid data"));
+        next(new BadRequestError(HTTP_BAD_REQUEST));
       }
       if (err.name === "DocumentNotFoundError") {
-        next(new NotFoundError("No document found for query."));
+        next(new NotFoundError(HTTP_NOT_FOUND));
       } else {
         next(err);
       }
@@ -142,7 +82,5 @@ const deleteCard = (req, res, next) => {
 module.exports = {
   getCards,
   createCard,
-  saveCard,
-  // unsaveCard,
   deleteCard,
 };
