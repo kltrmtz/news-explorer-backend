@@ -2,8 +2,6 @@ const router = require("express").Router();
 const {
   getCards,
   createCard,
-  saveCard,
-  // unsaveCard,
   deleteCard,
 } = require("../controllers/articleCards");
 const { auth } = require("../middlewares/auth");
