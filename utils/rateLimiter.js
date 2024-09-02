@@ -1,5 +1,3 @@
-// import { rateLimit } from "express-rate-limit";
-
 const rateLimit = require("express-rate-limit");
 
 const limiter = rateLimit({
