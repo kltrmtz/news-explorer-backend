@@ -40,7 +40,8 @@ As for the Create React App, it'll help you to create a template in which you'll
 
 ## Project Domain Links
 
-- [Frontend Domain]
+- [Frontend Domain] (www.newsexplorer.pakasak.com)
 
-- [Backend Domain]
+- [Backend Domain] (api.newsexplorer.pakasak.com)
+
 # news-explorer-backend
